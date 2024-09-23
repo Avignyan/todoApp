@@ -22,7 +22,6 @@ class AssetTypeResource(Resource):
 
     @ns.expect(ASSETTYPE_DAO)
     def post(self, asset_id):
-        """Create a new asset type"""
         if asset_id in asset_types:
             return {"message": f"Asset with ID {asset_id} already exists"}, 400
         data = request.json
@@ -31,7 +30,6 @@ class AssetTypeResource(Resource):
 
     @ns.expect(ASSETTYPE_DAO)
     def put(self, asset_id):
-        """Update an existing asset type"""
         if asset_id not in asset_types:
             return {"message": f"Asset with ID {asset_id} not found"}, 404
         data = request.json
@@ -39,7 +37,6 @@ class AssetTypeResource(Resource):
         return {"message": f"Asset with ID {asset_id} updated"}, 200
 
     def delete(self, asset_id):
-        """Delete an asset type by ID"""
         if asset_id in asset_types:
             del asset_types[asset_id]
             return {"message": f"Asset with ID {asset_id} deleted"}, 200
