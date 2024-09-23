@@ -3,17 +3,14 @@ from flask_restx import Api, Resource, fields
 
 app = Flask(__name__)
 
-# Initialize Flask-RESTX
 api = Api(app)
 ns = api.namespace('Todo', description='Todo operations')
 
-# Model definition
 ASSETTYPE_DAO = ns.model(name="ASSETTYPE_MODEL_NAME", model={
     "F_ASSET_TYPENAME": fields.String(required=True),
     "F_VIDEOCASSETTE": fields.String(required=True)
 })
 
-# In-memory data storage (this is just a placeholder for demonstration purposes)
 asset_types = {}
 
 @ns.route('/<string:asset_id>')
