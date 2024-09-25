@@ -6,42 +6,41 @@ app = Flask(__name__)
 api = Api(app)
 ns = api.namespace('Todo', description='Todo operations')
 
-ASSETTYPE_DAO = ns.model(name="ASSETTYPE_MODEL_NAME", model={
-    "F_ASSET_TYPENAME": fields.String(required=True),
-    "F_VIDEOCASSETTE": fields.String(required=True)
+model1 = ns.model(name="ASSETTYPE_MODEL_NAME", model={
+    "Name": fields.String(required=True),
+    "ID": fields.String(required=True)
 })
 
 asset_types = {}
 
-@ns.route('/<string:asset_id>')
+@ns.route('/<string:ID>')
 class AssetTypeResource(Resource):
-    def get(self, asset_id):
-        if asset_id in asset_types:
-            return asset_types[asset_id], 200
-        return {"message": f"Asset with ID {asset_id} not found"}, 404
+    def get(self, ID):
+        if ID in asset_types:
+            return asset_types[ID],200
+        return {"message": f"Asset with ID {ID} not found"}, 404
 
-    @ns.expect(ASSETTYPE_DAO)
-    def post(self, asset_id):
-        if asset_id in asset_types:
-            return {"message": f"Asset with ID {asset_id} already exists"}, 400
+    @ns.expect(model1)
+    def post(self, ID):
+        if ID in asset_types:
+            return {"message": f"Asset with ID {ID} already exists"}, 400
         data = request.json
-        asset_types[asset_id] = data
-        return {"message": f"Asset with ID {asset_id} created"}, 201
+        asset_types[ID] = data
+        return {"message": f"Asset with ID {ID} created"}, 201
 
-    @ns.expect(ASSETTYPE_DAO)
-    def put(self, asset_id):
-        if asset_id not in asset_types:
-            return {"message": f"Asset with ID {asset_id} not found"}, 404
+    @ns.expect(model1)
+    def put(self, ID):
+        if ID not in asset_types:
+            return {"message": f"Asset with ID {ID} not found"}, 404
         data = request.json
-        asset_types[asset_id] = data
-        return {"message": f"Asset with ID {asset_id} updated"}, 200
+        asset_types[ID] = data
+        return {"message": f"Asset with ID {ID} updated"}, 200
 
-    def delete(self, asset_id):
-        if asset_id in asset_types:
-            del asset_types[asset_id]
-            return {"message": f"Asset with ID {asset_id} deleted"}, 200
-        return {"message": f"Asset with ID {asset_id} not found"}, 404
-
+    def delete(self, ID):
+        if ID in asset_types:
+            del asset_types[ID]
+            return {"message": f"Asset with ID {ID} deleted"}, 200
+        return {"message": f"Asset with ID {ID} not found"}, 404
 
 if __name__ == '__main__':
     app.run(debug=True)
